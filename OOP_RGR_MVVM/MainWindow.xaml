@@ -1,0 +1,302 @@
+﻿<Window x:Class="OOP_RGR_MVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OOP_RGR_MVVM" xmlns:viewmodels="clr-namespace:OOP_RGR_MVVM.ViewModels"
+        mc:Ignorable="d"
+        Title="Адский угодник" Height="600" Width="800"  MinHeight="330" MinWidth="525" >
+    <Window.Resources>
+        <Style TargetType="{x:Type ButtonBase}"
+           x:Key="{x:Type ButtonBase}">
+            <Setter Property="Background"
+                Value="Transparent" />
+            <Setter Property="BorderBrush"
+                Value="Transparent" />
+            <Setter Property="BorderThickness"
+                Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled"
+                                 Value="False">
+                                <Setter Property="Opacity"
+                                    Value="0.5" />
+                                <Setter Property="Foreground"
+                                    Value="DimGray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type ButtonBase}}"
+           x:Key="StyleButtonPlusMinus">
+            <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter Property="VerticalAlignment"
+                Value="Center" />
+            <Setter Property="Padding"
+                Value="2" />
+        </Style>
+        <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource StyleButtonPlusMinus}"
+           x:Key="StyleButtonAddNewItem">
+            <Setter Property="Foreground"
+                Value="Green" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Path Data="M 8,00 12,00 12,8 12,8 20,8 20,12 12,12 12,20 8,20 8,12 0,12 0,8 8,8 Z"
+                            Stretch="UniformToFill"
+                          Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}" >
+                        </Path>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                     Value="True">
+                    <Setter Property="Foreground"
+                        Value="LimeGreen" />
+                </Trigger>
+                <Trigger Property="IsPressed"
+                     Value="True">
+                    <Setter Property="Foreground"
+                        Value="DarkGreen" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource StyleButtonPlusMinus}"
+           x:Key="StyleButtonRemoveNewItem">
+            <Setter Property="Foreground"
+                Value="Red" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Path Data="M 10,0 10,8 20,8 20,12 12,12 10,20 12,12 8,12 0,12 0,8 10,8 Z"
+                          Stretch="UniformToFill"
+                          Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                     Value="True">
+                    <Setter Property="Foreground"
+                        Value="Orange" />
+                </Trigger>
+                <Trigger Property="IsPressed"
+                     Value="True">
+                    <Setter Property="Foreground"
+                        Value="DarkRed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--<Style x:Key="{x:Type ListBoxItem}" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Focusable" Value="False" />
+        </Style>-->
+        <!--<Style TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="True">
+                    <Setter Property="IsEnabled" Value="14" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid Margin="10,10,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="133"/>
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl x:Name="enteringSystem" Grid.Row="0" Grid.Column="1" Margin="5,0,0,5">
+            <TabItem Header="Вход/Выход" DataContext="{Binding LogInOutVM}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Email" Margin="4,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Пароль" Margin="4,0"/>
+
+                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding LoginInfo.Login}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding LoginInfo.Password}"/>
+
+                    <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Выйти" 
+                            Command="{Binding LogOutCommand}" />
+                    <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Войти" 
+                            Command="{Binding LogInCommand}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Регистрация" DataContext="{Binding RegistrationVM}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Email" Margin="4,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Пароль" Margin="4,0"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Прозвище" Margin="4,0"/>
+
+                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding NewEmail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                             ToolTip="{Binding PropertyErrorCollection[NewEmail] }"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding NewPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" ToolTip="{Binding PropertyErrorCollection[NewPassword]}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding NewNickName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" ToolTip="{Binding PropertyErrorCollection[NewNickName]}"/>
+
+                    <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Создать аккаунт" 
+                            Command="{Binding RegisterCommand}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Grid x:Name="shoppingCart" Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <ListBox Grid.Row="0" x:Name="productsList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" DataContext="{Binding ActiveCartProductsVM}" ItemsSource="{Binding Products}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <Image Height="190" Source="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="16" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding Path=Count, StringFormat='В наличии: {0}', UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                                <TextBlock FontSize="14" Text="{Binding Price, StringFormat=' {0} руб'}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="10,0,0,0" Height="15" Width="15"  
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.RemoveProductFromCartCommand}" 
+                                            CommandParameter="{Binding Path=Id}" Style="{StaticResource StyleButtonRemoveNewItem}">
+                                </Button>
+
+                                <TextBlock VerticalAlignment="Center" FontSize="14" Text="{Binding SelectedCount, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=SelectedCountVisibility, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Height="15" Width="15" 
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.AddProductToCartCommand}" 
+                                            CommandParameter="{Binding Path=Id}" Style="{StaticResource StyleButtonAddNewItem}">
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <!--<ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5">
+                                <Image Width="100" Height="75" Source="{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock FontSize="16" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="16" Text="{Binding Count, StringFormat='Выбрано: {0} штук', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Price, StringFormat=' {0} руб'}"/>
+                                    <Button HorizontalAlignment="Right" Command="{Binding AddToCartCommand}" CommandParameter="{Binding Id}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>-->
+            </ListBox>
+
+            <Grid Grid.Row="1" DataContext="{Binding ActivePaymentVM}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" HorizontalAlignment="Right" FontSize="19"
+                           Text="{Binding PaymentPrice, StringFormat='Итого: {0} руб', UpdateSourceTrigger=PropertyChanged}"
+                           Visibility="{Binding IsPaymentPriceVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                <Button Grid.Row="1" Content="Оплатить карму" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding PayCommand}"/>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="shopAsortment" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0" BorderThickness="0" DataContext="{Binding ActiveProductTypeSelectionVM}" SelectedItem="{Binding ProductType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListBoxItem Content="Электрогитары" />
+                <ListBoxItem Content="Расходники" />
+                <ListBoxItem Content="Комплектующие" />
+                <ListBoxItem Content="Аксессуары" />
+                <!--<Button HorizontalAlignment="Right" Height="105" Width="105" Style="{StaticResource StyleButtonAddNewItem}"/>
+                <Button HorizontalAlignment="Right" Height="105" Width="105" Style="{StaticResource StyleButtonRemoveNewItem}"/>-->
+            </ListBox>
+
+            <Grid x:Name="listViews" Grid.Column="1">
+                <!--<ListBox x:Name="cartList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding AllProducts}" >-->
+                <ListBox x:Name="cartList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" DataContext="{Binding ActiveStoreProductsVM}" ItemsSource="{Binding Products}" >
+                    <!--<ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Selector.IsEnabled" Value="False"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>-->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5">
+                                <Image Height="190" Source="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock FontSize="16" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="16" Text="{Binding Path=Count, StringFormat='В наличии: {0}', UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                                    <TextBlock FontSize="14" Text="{Binding Price, StringFormat=' {0} руб'}"/>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="10,0,0,0" Height="15" Width="15"  
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.RemoveProductFromCartCommand}" 
+                                            CommandParameter="{Binding Path=Id}" Style="{StaticResource StyleButtonRemoveNewItem}">
+                                    </Button>
+
+                                    <TextBlock VerticalAlignment="Center" FontSize="14" Text="{Binding SelectedCount}" Visibility="{Binding IsSelectedCountVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                    <!--<Rectangle VerticalAlignment="Stretch" Fill="Black" Width="1" Margin="2,0,2,0"/>-->
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Center" Height="15" Width="15" 
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=DataContext.AddProductToCartCommand}" 
+                                            CommandParameter="{Binding Path=Id}" Style="{StaticResource StyleButtonAddNewItem}">
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
